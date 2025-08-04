@@ -1,4 +1,4 @@
-name: Deploy Webpack site to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -15,38 +15,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
           
       - name: Install dependencies
         run: npm ci
         
-      - name: Build project with Webpack
+      - name: Build project
         run: npm run build
         
-      - name: Configure Pages
-        uses: actions/configure-pages@v4
+      - name: Prepare deployment
+        run: |
+          cp -R dist/* .
+          touch .nojekyll
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist/'  
-          
+          path: '.'  
+
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build-deploy
+    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
