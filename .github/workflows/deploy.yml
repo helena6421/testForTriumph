@@ -27,20 +27,25 @@ jobs:
           node-version: 20
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm config set optional false
+          npm ci --no-optional
+          npm uninstall fsevents --save-optional || true
         
       - name: Build project
         run: npm run build
         
       - name: Prepare deployment
         run: |
+          # Копируем содержимое dist в корень
           cp -R dist/* .
+          # Создаем .nojekyll чтобы GitHub не обрабатывал файлы как Jekyll
           touch .nojekyll
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'  
+          path: '.'  # Теперь используем корень вместо dist
 
   deploy:
     environment:
