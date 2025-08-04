@@ -20,32 +20,31 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
-      - name: Install dependencies
+
+      - name: Install dependencies (skip fsevents)
         run: |
           npm config set optional false
-          npm ci --no-optional
-          npm uninstall fsevents --save-optional || true
-        
+          npm ci --no-optional --ignore-scripts
+          npx npm-force-resolutions
+          npm install
+
       - name: Build project
         run: npm run build
-        
+
       - name: Prepare deployment
         run: |
-          # Копируем содержимое dist в корень
           cp -R dist/* .
-          # Создаем .nojekyll чтобы GitHub не обрабатывал файлы как Jekyll
           touch .nojekyll
-        
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'  # Теперь используем корень вместо dist
+          path: "."
 
   deploy:
     environment:

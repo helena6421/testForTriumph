@@ -95,7 +95,6 @@
     "follow-redirects": "^1.15.11",
     "forwarded": "^0.2.0",
     "fresh": "^0.5.2",
-    "fsevents": "^2.3.3",
     "function-bind": "^1.1.2",
     "get-intrinsic": "^1.3.0",
     "get-proto": "^1.0.1",
@@ -261,7 +260,6 @@
     "ws": "^8.18.3",
     "wsl-utils": "^0.1.0"
   },
-  "optionalDependencies": {},
   "scripts": {
     "start": "webpack serve --open",
     "build": "webpack --mode production"
