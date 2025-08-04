@@ -25,21 +25,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "npm"
 
-      - name: Install dependencies (skip fsevents)
-        run: |
-          npm config set optional false
-          npm ci --no-optional --ignore-scripts
-          npx npm-force-resolutions
-          npm install
+      - name: Install dependencies
+        run: npm ci --omit=optional
 
       - name: Build project
-        run: |
-          npx webpack --mode=production
+        run: npm run build
 
       - name: Prepare deployment
         run: |
+          # Копируем содержимое dist в корень
           cp -R dist/* .
+          # Создаем .nojekyll чтобы GitHub не обрабатывал файлы как Jekyll
           touch .nojekyll
 
       - name: Upload artifact
