@@ -261,9 +261,13 @@
     "ws": "^8.18.3",
     "wsl-utils": "^0.1.0"
   },
+  "optionalDependencies": {},
   "scripts": {
     "start": "webpack serve --open",
     "build": "webpack --mode production"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "repository": {
     "type": "git",
