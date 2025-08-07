@@ -587,5 +587,3 @@ export default class PolygonApp extends HTMLElement {
 }
 
 customElements.define("polygon-app", PolygonApp);
-
-customElements.define("polygon-app", PolygonApp);
